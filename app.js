@@ -60,13 +60,13 @@ if (CONFIG.app === 'dev') {
   models.sequelize.sync();
 }
 
-
-app.get('/sessions', passport.authenticate('jwt', { session: false }), sessions.getAll);
-app.get('/sessions/:sessionId', passport.authenticate('jwt', { session: false }), sessions.get);
-app.post('/sessions', passport.authenticate('jwt', { session: false }), sessions.create);
-app.put('/sessions', passport.authenticate('jwt', { session: false }), sessions.update);
-app.post('/users', userController.create);
+app.get('/sessions', sessions.getAll);
+app.get('/sessions/:sessionId', sessions.get);
+app.post('/sessions', sessions.create);
+app.put('/sessions', sessions.update);
+app.get('/users', users.getAll);
+app.get('/users/:userId', users.get);
+app.post('/users', users.create);
+app.put('/users', users.update);
 app.post('/login', userController.login);
 module.exports = app;
-
-

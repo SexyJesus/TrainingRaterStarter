@@ -33,4 +33,3 @@ ReS = function (res, data, code) {
 
   return res.json(sendData);
 }
-

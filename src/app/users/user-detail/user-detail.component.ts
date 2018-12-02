@@ -1,41 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ISession, SessionsService } from '../sessions.service';
-import { ToastsManager } from 'ng2-toastr';
+import { IUser, UsersService } from '../users.service';
 
 @Component({
-    templateUrl: './session-detail.component.html',
+    templateUrl: './user-detail.component.html',
 })
-export class SessionsDetailComponent implements OnInit {
+export class UsersDetailComponent implements OnInit {
 
-    session: ISession;
+    user: IUser;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private sessionsService: SessionsService,
-        private toastsManager: ToastsManager,
+        private usersService: UsersService,
     ) { }
 
     ngOnInit() {
-        let id: string | number = this.route.snapshot.paramMap.get('sessionId');
+        let id: string | number = this.route.snapshot.paramMap.get('userId');
         // tslint:disable-next-line:radix
         id = isNaN(parseInt(id)) ? 0 : parseInt(id);
         if (id > 0) {
             // get from db
-            this.sessionsService.getSessionById(id)
-                .subscribe((session) => {
-                    const startTime = new Date(session.startTime);
+            this.usersService.getUserById(id)
+                .subscribe((user) => {
+                    const startTime = new Date(user.startTime);
                     startTime.setHours(startTime.getHours() - (startTime.getTimezoneOffset() / 60));
-                    session.startTime = startTime.toISOString().slice(0, 16);
-                    this.session = session;
+                    user.startTime = startTime.toISOString().slice(0, 16);
+                    this.user = user;
                 });
         } else {
             // new
-            this.session = {
+            this.user = {
                 id: 0,
                 name: '',
-                location: '',
+                username: '',
                 startTime: this.getLocalDateTime(),
                 createdAt: '',
                 updatedAt: '',
@@ -51,22 +49,23 @@ export class SessionsDetailComponent implements OnInit {
 
     save(): void {
         if (!this.formValid()) {
-            this.toastsManager.error('Form invalid');
+            // TODO CCC: pop message about not valid
+            console.log('form invalid');
             return;
         }
-        this.sessionsService.save(this.session)
-            .subscribe((session) => {
-                this.toastsManager.success('Session saved');
-                this.router.navigate(['sessions']);
+        this.usersService.save(this.user)
+            .subscribe((user) => {
+                // TODO CCC: add a success message
+                this.router.navigate(['users']);
             });
     }
 
     private formValid(): boolean {
-        return this.session.name && this.session.location ? true : false;
+        return this.user.name && this.user.username ? true : false;
     }
 
     cancel(): void {
-        this.router.navigate(['sessions']);
+        this.router.navigate(['users']);
     }
 
 }
