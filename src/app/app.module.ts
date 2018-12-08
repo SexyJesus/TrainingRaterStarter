@@ -11,10 +11,14 @@ import { HomeComponent } from './home/home.component';
 import { SessionsModule } from './sessions/sessions.module';
 import { UsersModule } from './users/users.module';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthGuard } from './common/auth/auth.guard';
+import { AuthService } from './common/auth/auth.service';
+import { LoginDetailComponent } from './common/auth/login.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    LoginDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,7 +31,7 @@ import { AppRoutingModule } from './app-routing.module';
     ToastModule.forRoot(),
     AppRoutingModule
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

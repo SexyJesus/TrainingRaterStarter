@@ -5,10 +5,13 @@ import { UsersListComponent } from './users/users-list/users-list.component';
 import { NgModule } from '@angular/core';
 import { SessionsDetailComponent } from './sessions/session-detail/session-detail.component';
 import { UsersDetailComponent } from './users/user-detail/user-detail.component';
+import { AuthGuard } from './common/auth/auth.guard';
+import { LoginDetailComponent } from './common/auth/login.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'sessions', component: SessionsListComponent },
+  { path: 'login', component: LoginDetailComponent },
+  { path: 'sessions', component: SessionsListComponent, canActivate: [AuthGuard] },
   { path: 'sessions/:sessionId', component: SessionsDetailComponent },
   { path: 'users', component: UsersListComponent },
   { path: 'users/:userId', component: UsersDetailComponent }
